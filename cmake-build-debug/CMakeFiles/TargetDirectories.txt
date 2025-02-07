@@ -1,0 +1,3 @@
+C:/Users/derek/OneDrive/Documents/University of Rochester Young Scholar/CoinBaseBot/cmake-build-debug/CMakeFiles/CoinBaseBot.dir
+C:/Users/derek/OneDrive/Documents/University of Rochester Young Scholar/CoinBaseBot/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/derek/OneDrive/Documents/University of Rochester Young Scholar/CoinBaseBot/cmake-build-debug/CMakeFiles/rebuild_cache.dir
