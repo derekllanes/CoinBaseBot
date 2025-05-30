@@ -104,16 +104,7 @@ std::string httpRequest(
 //------------------------------------------
 // 3) HELPER: PARSE CANDLES & COMPUTE MA
 //------------------------------------------
-/**
- * Candle JSON format from the endpoint:
- *  "candles":[
- *    {"start":"1740975660", "low":"92737.68", "high":"92792.25",
- *     "open":"92750.98", "close":"92792.25", "volume":"4.23654304"},
- *    ...
- *  ]
- *
- * We'll compute a simple average of the "close" over the last N candles.
- */
+
 double computeMovingAverage(const nlohmann::json& candleData, int numCandles)
 {
     if (!candleData.is_array() || candleData.size() < static_cast<size_t>(numCandles)) {
@@ -135,12 +126,7 @@ double computeMovingAverage(const nlohmann::json& candleData, int numCandles)
 //------------------------------------------
 // 4) FETCH CANDLE DATA
 //------------------------------------------
-/**
- * getCandles(productId, granularity, numCandles)
- * We'll fetch enough candles for your MA window.
- *
- * In practice, you want a start/end time. For simplicity, let's do "current time" - some offset.
- */
+
 nlohmann::json getCandles(
         const std::string& keyName,
         const std::string& privateKeyPem,
@@ -186,11 +172,7 @@ nlohmann::json getCandles(
 //------------------------------------------
 // 5) PLACE LIMIT ORDER (MAKER)
 //------------------------------------------
-/**
- * We'll place a limit order with a price that is slightly "better" than the current best bid/ask
- * to attempt to be a maker. For a BUY, set limit price a bit below the best ask.
- * For a SELL, set limit price a bit above the best bid.
- */
+
 bool placeLimitOrder(
         const std::string& keyName,
         const std::string& privateKeyPem,
@@ -270,11 +252,9 @@ bool placeLimitOrder(
 int main()
 {
     // 1) Your Advanced Trade key name and private key
-    std::string keyName = "organizations/c0763149-bede-45a4-b50e-a1c0dd6ace30/apiKeys/e6c36c88-79ce-4194-8d78-8c71b368d839";
+    std::string keyName = "ADD_KEY_NAME";
     std::string privateKeyPem = R"(-----***REMOVED***-----
-MHcCAQEEIG9EH9TCkPSBpqzsRyPJdr5zesiLsxn4G2KroZmW15o4oAoGCCqGSM49
-AwEHoUQDQgAEaj24XDoOHkEjJalt1JaWSKAFgiYNMfz/Du1cGf4HnS43Vv+o3kkU
-DSKcYHYHzQXQ/4OuNZ8r7ERmwkXTOkw/lw==
+ADD_KEY_NAME
 -----END ***REMOVED***-----
 
 )";
