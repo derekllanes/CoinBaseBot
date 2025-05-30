@@ -252,8 +252,10 @@ bool placeLimitOrder(
 int main()
 {
     // 1) Your Advanced Trade key name and private key
+
     std::string keyName       = std::getenv("KEY_NAME");
     std::string privateKeyPem = std::getenv("PRIVATE_KEY_PEM");
+
 
     std::string productId = "BTC-USD";
 
