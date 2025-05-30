@@ -1,0 +1,20 @@
+# Ignore build outputs
+build/
+cmake-build-*/
+*.exe
+*.dll
+
+# Ignore CLion/JetBrains settings
+.idea/
+
+# Ignore CMake files
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# Ignore Visual Studio files
+*.sln
+*.vcxproj
+*.vcxproj.filters
+*.user

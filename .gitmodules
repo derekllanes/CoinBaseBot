@@ -1,0 +1,6 @@
+[submodule "libs/ccapi"]
+	path = libs/ccapi
+	url = https://github.com/crypto-chassis/ccapi.git
+[submodule "jwt-cpp"]
+	path = jwt-cpp
+	url = https://github.com/Thalhammer/jwt-cpp.git
