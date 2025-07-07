@@ -263,6 +263,12 @@ int main()
     std::string keyName       = std::getenv("KEY_NAME");
     std::string privateKeyPem = std::getenv("PRIVATE_KEY_PEM");
 
+    // Re-format Private Key
+    // Replace \n with real line breaks
+    size_t pos = 0;
+    while ((pos = privateKeyPem.find("\\n", pos)) != std::string::npos)
+        privateKeyPem.replace(pos, 2, "\n");
+
     // What are you trading
     std::string productId = "BTC-USD";
 
