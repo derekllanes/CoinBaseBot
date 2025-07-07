@@ -6,6 +6,7 @@ This repository contains a **C++ trading bot** for Coinbase Advanced Trade. It u
    - **Short-Term MA**: Based on 1-minute candles.
    - **Long-Term MA**: Based on 5-minute candles.
 - Trades with a small fixed USD amount (e.g., $5) based on crossover logic.
+- All orders are posted **maker-only** (`post_only=true`) to minimize taker fees.
 
 
 ## Project Structure and Usage
@@ -27,27 +28,31 @@ coinbase-trading-bot/
   
 ## Dependencies
 This bot uses the following C++ libraries:
-   - `jwt-cpp` — for signing JWTs
-   - `OpenSSL` — for cryptographic functions (`RAND_bytes`)
-   - `libcurl` — for HTTP requests
-   - `nlohmann/json` — for parsing Coinbase's JSON API responses
+   - **C++17 compiler**
+   - `jwt-cpp` — JWT creation & ES256 signing
+   - OpenSSL (`libssl`, `libcrypto`) — cryptography & RAND_bytes
+   - `libcurl` — HTTP / HTTPS requests
+   - `nlohmann/json` — JSON parsing
+   - `pthread` (Linux) — required by jwt-cpp / OpenSSL
 Make sure these libraries are installed and linked when building.
 
 ## Security & Credentials
-Sensitive API credentials are now retrieved securely using environment variables. Make sure the following environment variables are set before running:
-```java
-std::string keyName       = std::getenv("KEY_NAME");
-std::string privateKeyPem = std::getenv("PRIVATE_KEY_PEM");
+The bot never embeds secrets in source code. 
+Instead it reads your **Coinbase Advanced Trade API key** and **EC private key** from environment variables:
+```cpp
+std::string keyName       = std::getenv("KEY_NAME");       // Your Key ID (In Coinbase Api Key: "id")
+std::string privateKeyPem = std::getenv("PRIVATE_KEY_PEM"); // Your Private Key (In Coinbase Api Key: "privateKey")
 ```
-These values must be defined in your shell or .env file and must not be committed to your repository.
+The code also injects a 16-byte nonce into the JWT header to prevent replay attacks.
 ### Example (Bash)
 ```bash
 export KEY_NAME="your_api_key_name"
-export PRIVATE_KEY_PEM="-----BEGIN EC PRIVATE KEY-----\n...\n-----END EC PRIVATE KEY-----"
+export PRIVATE_KEY_PEM=$'-----BEGIN EC PRIVATE KEY-----\n...\n-----END EC PRIVATE KEY-----'
 ```
 Before running:
-1. Set the environment variables with your actual Coinbase Advanced Trade API credentials.
-2. Use a secure method (like .env files or credential managers) to manage secrets.
+1. Set both variables in your shell, `.env`, or a secret manager.
+2. Never commit the PEM string to Git (it grants signing authority).
+3. Rotate keys in Coinbase if you suspect they were exposed.
 
 ## How to Build & Run
 ### Build
@@ -55,7 +60,7 @@ Before running:
 2. Install dependencies.
 3. Use your preferred C++ build system (e.g., `g++`, `CMake`) to compile the program.
 ```bash
-g++ main.cpp -o trading_bot -lcurl -lssl -lcrypto
+g++ -std=c++17 main.cpp -o trading_bot -lcurl -lssl -lcrypto -pthread
 ```
 ### Run
 ```bash
