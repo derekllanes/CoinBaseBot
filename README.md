@@ -40,10 +40,13 @@ Make sure these libraries are installed and linked when building.
 The bot never embeds secrets in source code. 
 Instead it reads your **Coinbase Advanced Trade API key** and **EC private key** from environment variables:
 ```cpp
-std::string keyName       = std::getenv("KEY_NAME");       // Your Key ID (In Coinbase Api Key: "id")
+std::string keyName       = std::getenv("KEY_NAME");       // Your Key ID (In Coinbase Api Key: "name")
 std::string privateKeyPem = std::getenv("PRIVATE_KEY_PEM"); // Your Private Key (In Coinbase Api Key: "privateKey")
 ```
 The code also injects a 16-byte nonce into the JWT header to prevent replay attacks.
+> Note:
+> Ensure your API key from Coinbase is generated with **ECDSA selected.
+
 ### Example (Bash)
 ```bash
 export KEY_NAME="your_api_key_name"
@@ -53,6 +56,25 @@ Before running:
 1. Set both variables in your shell, `.env`, or a secret manager.
 2. Never commit the PEM string to Git (it grants signing authority).
 3. Rotate keys in Coinbase if you suspect they were exposed.
+
+### Alternative: Using a `.env` file (e.g., in CLion)
+
+You can store sensitive variables in a `.env`-style file and configure your IDE (like CLion) to load them during runtime.
+
+Example `keys.env`:
+```bash
+KEY_NAME=your_api_key_name
+PRIVATE_KEY_PEM=-----BEGIN EC PRIVATE KEY-----
+...
+-----END EC PRIVATE KEY-----
+```
+
+### In CLion:
+1. Open **Run/Debug Configurations**.
+2. Go to **Environment Variables** -> “Load variables from file”.
+3. Point to `keys.env`.
+
+This keeps secrets out of source code while allowing local development.
 
 ## How to Build & Run
 ### Build
